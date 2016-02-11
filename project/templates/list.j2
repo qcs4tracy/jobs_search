@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap-3.3.6-dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/app-1.css') }}">
+  </head>
+
+  <body>
+
+    <div id="search-results-box">
+      <div>
+        <div>
+
+          <div id="search-paging">
+            <div class="container">
+              <div class="row">
+                <div class="info col-xs-12">{{cnt_range[0]}}-{{cnt_range[1]}} of {{total_cnt}} open positions</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="search-results">
+
+            <div class="container">
+              {% for job in jobs %}
+              <!--one record -->
+              <div class="row">
+                <div class="jobs col-xs-12">
+                  <a href="https://www.amazon.jobs/jobs/{{job.id_icims}}" target="_blank">
+                    <div class="job">
+                      <div class="row">
+                        <div class="info first col-xs-12 col-md-6">
+                          <h2 class="job-title">{{job.title}}</h2>
+                          <p class="location-and-id">{{job.location}} | Job ID: {{job.id_icims}}</p>
+                        </div>
+                        <div class="info col-xs-12 col-md-6">
+                          <h2 class="posting-date">Posted {{job.feed_date}}</h2>
+                          <p class="meta time-elapsed">{{job.time_ago}}</p></div>
+                        </div>
+                        <div class="row">
+                          <p class="description col-xs-12 col-md-10">
+                            <span >{{job.description_short}}</span>
+                            <span class="read-more">...Read more.</span>
+                          </p>
+                        </div>
+                      </div>
+                  </a>
+                </div>
+              </div>
+              <!--one record -->
+              {% else %}
+                No Records...
+            {% endfor%}
+
+            </div><!-- container -->
+
+          </div> <!-- search-results -->
+
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <!-- The pagination -->
+      {% if show %}
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-3"></div>
+          <div class="col-xs-6">
+            <nav>
+
+              <ul class="pagination">
+
+                {% if page_now > 1 %}
+                <li><a href="/amz_jobs/{{page_now-1}}">Previous</a></li>
+                {% endif %}
+
+                {% for i in range(head_page, tail_page+1) %}
+                  {% if page_now == i %}
+                    <li class="active"><a href="#">{{i}}</a></li>
+                  {% else %}
+                    <li><a href="/amz_jobs/{{i}}">{{i}}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if page_now < last_page %}
+                <li><a href="/amz_jobs/{{page_now+1}}">Next</a></li>
+                {% endif %}
+
+              </ul>
+
+            </nav>
+          </div>
+          <div class="col-xs-3"></div>
+        </div>
+      </div>
+      {% endif %}
+      <!-- The pagination -->
+    </footer>
+
+  </body>
+
+</html>
